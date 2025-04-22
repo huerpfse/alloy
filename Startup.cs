@@ -3,7 +3,9 @@ using EPiServer.Cms.Shell;
 using EPiServer.Cms.UI.AspNetIdentity;
 using EPiServer.Scheduler;
 using EPiServer.ServiceLocation;
+using EPiServer.Web;
 using EPiServer.Web.Routing;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace alloy_bestbets;
 
@@ -21,7 +23,7 @@ public class Startup
         if (_webHostingEnvironment.IsDevelopment())
         {
             AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(_webHostingEnvironment.ContentRootPath, "App_Data"));
-
+            services.TryAddEnumerable(Microsoft.Extensions.DependencyInjection.ServiceDescriptor.Singleton(typeof(IFirstRequestInitializer), typeof(AdminCreator)));
             services.Configure<SchedulerOptions>(options => options.Enabled = false);
         }
 
